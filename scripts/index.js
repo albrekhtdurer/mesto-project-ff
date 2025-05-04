@@ -15,6 +15,7 @@ function renderCard(cardData, deleteFunc) {
   const card = cardTemplate.querySelector('.card').cloneNode(true);
   card.querySelector('.card__title').textContent = cardData.name;
   card.querySelector('.card__image').src = cardData.link;
+  card.querySelector('.card__image').alt = cardData.name;
   const deleteButton = card.querySelector('.card__delete-button');
   deleteButton.addEventListener('click', deleteFunc);
   return card;
