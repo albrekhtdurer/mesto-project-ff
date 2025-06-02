@@ -8,7 +8,7 @@ const cardsList = document.querySelector('.places__list');
  * @param   {function}                     deleteFunc функция удаления карточки
  * @returns {HTMLElement}                             элемент карточки
  */
-function renderCard(cardData, deleteFunc) {
+export function renderCard(cardData, deleteFunc) {
   if (typeof cardData !== 'object' || !cardData.name || !cardData.link) {
     return;
   }
@@ -25,14 +25,17 @@ function renderCard(cardData, deleteFunc) {
  * @function deleteCard - удаляет карточку со страницы
  * @param {Event} evt эвент события
  */
-function deleteCard(evt) {
+export function deleteCard(evt) {
   const cardToDelete = evt.currentTarget.closest('.card');
   cardToDelete.remove();
 }
 
-initialCards.forEach(function (card) {
+
+export function addCardsOnPage(cards) {
+  cards.forEach(function (card) {
   const renderedCard = renderCard(card, deleteCard);
   if (renderedCard) {
     cardsList.append(renderedCard);
   }
-});
+})
+};
