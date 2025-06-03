@@ -22,14 +22,34 @@ import logo from './images/logo.svg'
 addCardsOnPage(initialCards);
 
 const popupEdit = document.querySelector('.popup_type_edit');
-const editButton = document.querySelector('.profile__edit-button');
-const closeButton = document.querySelector('.popup__close');
+const popupAdd = document.querySelector('.popup_type_new-card');
+const buttonEdit = document.querySelector('.profile__edit-button');
+const buttonAdd = document.querySelector('.profile__add-button');
+const closeButtons = document.querySelectorAll('.popup__close');
 
-editButton.addEventListener('click', function() {
+buttonEdit.addEventListener('click', function() {
   openModal(popupEdit);
 });
 
-closeButton.addEventListener('click', function(evt) {
-  const popupToClose = evt.target.closest('.popup_is-opened');
-  closeModal(popupToClose);
+buttonAdd.addEventListener('click', function() {
+  openModal(popupAdd);
 });
+
+closeButtons.forEach(button => {
+  button.addEventListener('click', function(evt) {
+    const popupToClose = evt.target.closest('.popup_is-opened');
+    closeModal(popupToClose);
+  });
+});
+
+popupEdit.addEventListener('click', function(evt) {
+  if(evt.target.classList.contains('popup_is-opened')) {
+    closeModal(evt.target);
+  }
+});
+
+popupAdd.addEventListener('click', function(evt) {
+  if(evt.target.classList.contains('popup_is-opened')) {
+    closeModal(evt.target);
+  }
+})
