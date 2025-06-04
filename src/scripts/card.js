@@ -4,12 +4,13 @@ const cardTemplate = document.querySelector('#card-template').content;
 
 /**
  * @function renderCard - создает готовый к выводу элемент карточки
- * @param   {{name: string, link: string}} cardData   данные карточки
- * @param   {function}                     deleteFunc функция удаления карточки
- * @param   {function}                     likeFunc   функция проставления лайка
+ * @param   {{name: string, link: string}} cardData              данные карточки
+ * @param   {function}                     deleteFunc            функция удаления карточки
+ * @param   {function}                     likeFunc              функция проставления лайка
+ * @param   {function}                     createCardPopupFunc   функция рендеринга попап-окна с карточкой
  * @returns {HTMLElement}                             элемент карточки
  */
-export function renderCard(cardData, deleteFunc, likeFunc, openCardFunc) {
+export function renderCard(cardData, deleteFunc, likeFunc, createCardPopupFunc) {
   if (typeof cardData !== 'object' || !cardData.name || !cardData.link) {
     return;
   }
@@ -19,7 +20,7 @@ export function renderCard(cardData, deleteFunc, likeFunc, openCardFunc) {
   cardTitle.textContent = cardData.name;
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
-  cardImage.addEventListener('click', openCardFunc);
+  cardImage.addEventListener('click', createCardPopupFunc);
   const deleteButton = card.querySelector('.card__delete-button');
   deleteButton.addEventListener('click', deleteFunc);
   const likeButton = card.querySelector('.card__like-button');
@@ -55,7 +56,6 @@ export function createCardPopup(evt) {
   cardPopupImage.src = evt.target.src;
   cardPopupImage.alt = evt.target.alt;
   cardPopupTitle.textContent = evt.target.alt;
-  openModal(cardPopup);
 }
 
 /**

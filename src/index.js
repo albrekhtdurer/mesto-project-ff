@@ -17,6 +17,13 @@ import likeInactive from './images/like-inactive.svg'
 import logo from './images/logo.svg'
 
 const displayedCards = document.querySelector('.places__list');
+const cardPopup = document.querySelector('.popup_type_image');
+
+displayedCards.addEventListener('click', function(evt) {
+  if (evt.target.classList.contains('card__image')) {
+    openModal(cardPopup);
+  }
+});
 
 initialCards.forEach(function(card) {
   const renderedCard = renderCard(card, deleteCard, toggleLikeButton, createCardPopup);
