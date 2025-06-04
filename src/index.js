@@ -30,27 +30,9 @@ initialCards.forEach(function(card) {
   addCardOnPage(renderedCard, 'end', displayedCards);
 });
 
-const popupEdit = document.querySelector('.popup_type_edit');
-const buttonEdit = document.querySelector('.profile__edit-button');
-
-buttonEdit.addEventListener('click', function() {
-  openModal(popupEdit);
-});
-
-const popupAdd = document.querySelector('.popup_type_new-card');
-const buttonAdd = document.querySelector('.profile__add-button');
-
-buttonAdd.addEventListener('click', function() {
-  openModal(popupAdd);
-});
-
 const formEdit = document.forms['edit-profile'];
 const formEditName = formEdit.elements['name'];
 const formEditDescription = formEdit.elements['description'];
-const currentName = document.querySelector('.profile__title').textContent;
-const currentDescription = document.querySelector('.profile__description').textContent;
-formEditName.value = currentName;
-formEditDescription.value = currentDescription;
 
 function handleFormEditSubmit(evt) {
   evt.preventDefault();
@@ -60,6 +42,25 @@ function handleFormEditSubmit(evt) {
 }
 
 formEdit.addEventListener('submit', handleFormEditSubmit);
+
+const popupEdit = document.querySelector('.popup_type_edit');
+const buttonEdit = document.querySelector('.profile__edit-button');
+
+buttonEdit.addEventListener('click', function() {
+  const currentName = document.querySelector('.profile__title').textContent;
+  const currentDescription = document.querySelector('.profile__description').textContent;
+  formEditName.value = currentName;
+  formEditDescription.value = currentDescription;
+
+  openModal(popupEdit);
+});
+
+const popupAdd = document.querySelector('.popup_type_new-card');
+const buttonAdd = document.querySelector('.profile__add-button');
+
+buttonAdd.addEventListener('click', function() {
+  openModal(popupAdd);
+});
 
 const formAdd = document.forms['new-place'];
 const inputPlaceName = formAdd.elements['place-name'];
