@@ -1,7 +1,3 @@
-import { openModal } from "./modal";
-
-const cardTemplate = document.querySelector('#card-template').content;
-
 /**
  * @function renderCard - создает готовый к выводу элемент карточки
  * @param   {{name: string, link: string}} cardData              данные карточки
@@ -14,6 +10,7 @@ export function renderCard(cardData, deleteFunc, likeFunc, createCardPopupFunc) 
   if (typeof cardData !== 'object' || !cardData.name || !cardData.link) {
     return;
   }
+  const cardTemplate = document.querySelector('#card-template').content;
   const card = cardTemplate.querySelector('.card').cloneNode(true);
   const cardTitle = card.querySelector('.card__title');
   const cardImage = card.querySelector('.card__image');
