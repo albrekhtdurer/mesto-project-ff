@@ -5,17 +5,16 @@
 
 export function openModal(popup) {
   popup.classList.add('popup_is-opened');
-  popup.addEventListener('click', function(evt) {
-      if(evt.target.classList.contains('popup_is-opened')) {
-        closeModal(evt.target);
-      }
+  popup.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('popup_is-opened')) {
+      closeModal(evt.target);
+    }
   });
   const closeButton = popup.querySelector('.popup__close');
-  closeButton.addEventListener('click', function() {
+  closeButton.addEventListener('click', function () {
     closeModal(popup);
   });
   document.addEventListener('keydown', handleEscape);
-  
 }
 
 /**

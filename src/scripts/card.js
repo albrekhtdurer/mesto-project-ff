@@ -6,7 +6,12 @@
  * @param   {function}                     createCardPopupFunc   функция рендеринга попап-окна с карточкой
  * @returns {HTMLElement}                             элемент карточки
  */
-export function renderCard(cardData, deleteFunc, likeFunc, createCardPopupFunc) {
+export function renderCard(
+  cardData,
+  deleteFunc,
+  likeFunc,
+  createCardPopupFunc
+) {
   if (typeof cardData !== 'object' || !cardData.name || !cardData.link) {
     return;
   }
@@ -57,7 +62,7 @@ export function createCardPopup(evt) {
 
 /**
  * @function addCardOnPage - рендерит и добавляет карточку на страницу
- * @param {HTMLElement} card           DOM-элемент карточки         
+ * @param {HTMLElement} card           DOM-элемент карточки
  * @param {string}      position       добавлять карточку в начало или конец контейнера
  * @param {HTMLElement} displayedCards контейнер с карточками
  */
