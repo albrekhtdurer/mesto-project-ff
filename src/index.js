@@ -1,5 +1,5 @@
-import {renderCard, deleteCard, addCardOnPage} from './scripts/card'
-import {initialCards} from './scripts/cards'
+import { renderCard, deleteCard, toggleLikeButton, createCardPopup, addCardOnPage } from './scripts/card'
+import { initialCards } from './scripts/cards'
 import { closeModal, openModal } from './scripts/modal'
 
 import './pages/index.css'
@@ -16,16 +16,27 @@ import likeActive from './images/like-active.svg'
 import likeInactive from './images/like-inactive.svg'
 import logo from './images/logo.svg'
 
+const displayedCards = document.querySelector('.places__list');
+
 initialCards.forEach(function(card) {
-  addCardOnPage(card, 'end');
-})
+  const renderedCard = renderCard(card, deleteCard, toggleLikeButton, createCardPopup);
+  addCardOnPage(renderedCard, 'end', displayedCards);
+});
 
 const popupEdit = document.querySelector('.popup_type_edit');
-const popupAdd = document.querySelector('.popup_type_new-card');
 const buttonEdit = document.querySelector('.profile__edit-button');
+
+buttonEdit.addEventListener('click', function() {
+  openModal(popupEdit);
+});
+
+const popupAdd = document.querySelector('.popup_type_new-card');
 const buttonAdd = document.querySelector('.profile__add-button');
-const closeButtons = document.querySelectorAll('.popup__close');
-//TODO: переименовать тут по шаблону (?) и подумать про модуль
+
+buttonAdd.addEventListener('click', function() {
+  openModal(popupAdd);
+});
+
 const formEdit = document.forms['edit-profile'];
 const formEditName = formEdit.elements['name'];
 const formEditDescription = formEdit.elements['description'];
@@ -33,10 +44,6 @@ const currentName = document.querySelector('.profile__title').textContent;
 const currentDescription = document.querySelector('.profile__description').textContent;
 formEditName.value = currentName;
 formEditDescription.value = currentDescription;
-const formAdd = document.forms['new-place'];
-const inputPlaceName = formAdd.elements['place-name'];
-const inputLink = formAdd.elements['link'];
-
 
 function handleFormEditSubmit(evt) {
   evt.preventDefault();
@@ -47,37 +54,17 @@ function handleFormEditSubmit(evt) {
 
 formEdit.addEventListener('submit', handleFormEditSubmit);
 
-formAdd.addEventListener('submit', function(evt) {
+const formAdd = document.forms['new-place'];
+const inputPlaceName = formAdd.elements['place-name'];
+const inputLink = formAdd.elements['link'];
+
+function handleFormAddSubmit(evt) {
   evt.preventDefault();
   const cardData = {name: inputPlaceName.value, link: inputLink.value};
-  addCardOnPage(cardData, 'start');
+  const renderedCard = renderCard(cardData, deleteCard, toggleLikeButton, createCardPopup);
+  addCardOnPage(renderedCard, 'start', displayedCards);
   formAdd.reset();
   closeModal(popupAdd);
-});
+}
 
-buttonEdit.addEventListener('click', function() {
-  openModal(popupEdit);
-});
-
-buttonAdd.addEventListener('click', function() {
-  openModal(popupAdd);
-});
-
-closeButtons.forEach(function(button) {
-  button.addEventListener('click', function(evt) {
-    const popupToClose = evt.target.closest('.popup_is-opened');
-    closeModal(popupToClose);
-  });
-});
-
-popupEdit.addEventListener('click', function(evt) {
-  if(evt.target.classList.contains('popup_is-opened')) {
-    closeModal(evt.target);
-  }
-});
-
-popupAdd.addEventListener('click', function(evt) {
-  if(evt.target.classList.contains('popup_is-opened')) {
-    closeModal(evt.target);
-  }
-});
+formAdd.addEventListener('submit', handleFormAddSubmit);

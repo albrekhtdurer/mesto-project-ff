@@ -1,6 +1,6 @@
-const cardTemplate = document.querySelector('#card-template').content;
+import { openModal } from "./modal";
 
-const displayedCards = document.querySelector('.places__list');
+const cardTemplate = document.querySelector('#card-template').content;
 
 /**
  * @function renderCard - создает готовый к выводу элемент карточки
@@ -9,14 +9,17 @@ const displayedCards = document.querySelector('.places__list');
  * @param   {function}                     likeFunc   функция проставления лайка
  * @returns {HTMLElement}                             элемент карточки
  */
-export function renderCard(cardData, deleteFunc, likeFunc) {
+export function renderCard(cardData, deleteFunc, likeFunc, openCardFunc) {
   if (typeof cardData !== 'object' || !cardData.name || !cardData.link) {
     return;
   }
   const card = cardTemplate.querySelector('.card').cloneNode(true);
-  card.querySelector('.card__title').textContent = cardData.name;
-  card.querySelector('.card__image').src = cardData.link;
-  card.querySelector('.card__image').alt = cardData.name;
+  const cardTitle = card.querySelector('.card__title');
+  const cardImage = card.querySelector('.card__image');
+  cardTitle.textContent = cardData.name;
+  cardImage.src = cardData.link;
+  cardImage.alt = cardData.name;
+  cardImage.addEventListener('click', openCardFunc);
   const deleteButton = card.querySelector('.card__delete-button');
   deleteButton.addEventListener('click', deleteFunc);
   const likeButton = card.querySelector('.card__like-button');
@@ -33,17 +36,38 @@ export function deleteCard(evt) {
   cardToDelete.remove();
 }
 
-export function addLike(evt) {
+/**
+ * @function toggleLikeButton - меняет состояние кнопки лайка
+ * @param {Event} evt эвент события
+ */
+export function toggleLikeButton(evt) {
   evt.target.classList.toggle('card__like-button_is-active');
 }
 
-export function addCardOnPage(card, position) {
-  console.log('tralalero tralala');
-  const renderedCard = renderCard(card, deleteCard, addLike);
-  if (position === 'start') {
-    displayedCards.prepend(renderedCard);
-  } else if (position === 'end') {
-    displayedCards.append(renderedCard);
-  }
+/**
+ * @function createCardPopup - рендерит попап с изображением карточки
+ * @param {Event} evt эвент события
+ */
+export function createCardPopup(evt) {
+  const cardPopup = document.querySelector('.popup_type_image');
+  const cardPopupImage = cardPopup.querySelector('.popup__image');
+  const cardPopupTitle = cardPopup.querySelector('.popup__caption');
+  cardPopupImage.src = evt.target.src;
+  cardPopupImage.alt = evt.target.alt;
+  cardPopupTitle.textContent = evt.target.alt;
+  openModal(cardPopup);
 }
 
+/**
+ * @function addCardOnPage - рендерит и добавляет карточку на страницу
+ * @param {HTMLElement} card           DOM-элемент карточки         
+ * @param {string}      position       добавлять карточку в начало или конец контейнера
+ * @param {HTMLElement} displayedCards контейнер с карточками
+ */
+export function addCardOnPage(card, position, displayedCards) {
+  if (position === 'start') {
+    displayedCards.prepend(card);
+  } else if (position === 'end') {
+    displayedCards.append(card);
+  }
+}
