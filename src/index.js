@@ -1,8 +1,4 @@
-import {
-  renderCard,
-  deleteCard,
-  toggleLikeButton,
-} from './scripts/card';
+import { renderCard, deleteCard, toggleLikeButton } from './scripts/card';
 import { initialCards } from './scripts/cards';
 import { closeModal, openModal } from './scripts/modal';
 
@@ -88,8 +84,7 @@ initialCards.forEach(function (card) {
 function handleFormEditSubmit(evt) {
   evt.preventDefault();
   profileTitle.textContent = formEditName.value;
-  profileDescription.textContent =
-    formEditDescription.value;
+  profileDescription.textContent = formEditDescription.value;
   closeModal(popupEdit);
 }
 
@@ -124,10 +119,13 @@ function handleFormAddSubmit(evt) {
 
 formAdd.addEventListener('submit', handleFormAddSubmit);
 
-popups.forEach(function(popup) {
-  popup.addEventListener('click', function(evt) {
-    if (evt.target.classList.contains('popup_is-opened') || evt.target.classList.contains('popup__close')) {
+popups.forEach(function (popup) {
+  popup.addEventListener('click', function (evt) {
+    if (
+      evt.target.classList.contains('popup_is-opened') ||
+      evt.target.classList.contains('popup__close')
+    ) {
       closeModal(popup);
     }
-  })
+  });
 });
