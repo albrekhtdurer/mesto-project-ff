@@ -46,30 +46,3 @@ export function deleteCard(evt) {
 export function toggleLikeButton(evt) {
   evt.target.classList.toggle('card__like-button_is-active');
 }
-
-/**
- * @function createCardPopup - рендерит попап с изображением карточки
- * @param {Event} evt эвент события
- */
-export function createCardPopup(evt) {
-  const cardPopup = document.querySelector('.popup_type_image');
-  const cardPopupImage = cardPopup.querySelector('.popup__image');
-  const cardPopupTitle = cardPopup.querySelector('.popup__caption');
-  cardPopupImage.src = evt.target.src;
-  cardPopupImage.alt = evt.target.alt;
-  cardPopupTitle.textContent = evt.target.alt;
-}
-
-/**
- * @function addCardOnPage - рендерит и добавляет карточку на страницу
- * @param {HTMLElement} card           DOM-элемент карточки
- * @param {string}      position       добавлять карточку в начало или конец контейнера
- * @param {HTMLElement} displayedCards контейнер с карточками
- */
-export function addCardOnPage(card, position, displayedCards) {
-  if (position === 'start') {
-    displayedCards.prepend(card);
-  } else if (position === 'end') {
-    displayedCards.append(card);
-  }
-}

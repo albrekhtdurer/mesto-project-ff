@@ -22,6 +22,33 @@ import likeActive from './images/like-active.svg';
 import likeInactive from './images/like-inactive.svg';
 import logo from './images/logo.svg';
 
+/**
+ * @function createCardPopup - рендерит попап с изображением карточки
+ * @param {Event} evt эвент события
+ */
+function createCardPopup(evt) {
+  const cardPopup = document.querySelector('.popup_type_image');
+  const cardPopupImage = cardPopup.querySelector('.popup__image');
+  const cardPopupTitle = cardPopup.querySelector('.popup__caption');
+  cardPopupImage.src = evt.target.src;
+  cardPopupImage.alt = evt.target.alt;
+  cardPopupTitle.textContent = evt.target.alt;
+}
+
+/**
+ * @function addCardOnPage - добавляет карточку на страницу
+ * @param {HTMLElement} card           DOM-элемент карточки
+ * @param {string}      position       добавлять карточку в начало или конец контейнера
+ * @param {HTMLElement} displayedCards контейнер с карточками
+ */
+function addCardOnPage(card, position, displayedCards) {
+  if (position === 'start') {
+    displayedCards.prepend(card);
+  } else if (position === 'end') {
+    displayedCards.append(card);
+  }
+}
+
 const displayedCards = document.querySelector('.places__list');
 const cardPopup = document.querySelector('.popup_type_image');
 
