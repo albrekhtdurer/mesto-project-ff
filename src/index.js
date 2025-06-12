@@ -1,7 +1,7 @@
 import { renderCard, deleteCard, toggleLikeButton } from './scripts/card';
 import { initialCards } from './scripts/cards';
 import { closeModal, openModal } from './scripts/modal';
-import { enableValidation } from './scripts/validation';
+import { enableValidation, clearValidation } from './scripts/validation';
 
 import './pages/index.css';
 
@@ -26,6 +26,11 @@ const displayedCards = document.querySelector('.places__list');
 const formEdit = document.forms['edit-profile'];
 const formEditName = formEdit.elements['name'];
 const formEditDescription = formEdit.elements['description'];
+const validationConfigEdit = {
+  inputSelector: '.popup__input',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
+};
 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
@@ -36,6 +41,14 @@ const buttonEdit = document.querySelector('.profile__edit-button');
 const formAdd = document.forms['new-place'];
 const formAddPlaceName = formAdd.elements['place-name'];
 const formAddLink = formAdd.elements['link'];
+const validationConfigAdd = {
+  inputSelector: '.popup__input',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
+  inputTextsToClear: ['place', 'link'],
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+};
 
 const popupAdd = document.querySelector('.popup_type_new-card');
 const buttonAdd = document.querySelector('.profile__add-button');
@@ -96,11 +109,12 @@ buttonEdit.addEventListener('click', function () {
   const currentDescription = profileDescription.textContent;
   formEditName.value = currentName;
   formEditDescription.value = currentDescription;
-
+  clearValidation(formEdit, validationConfigEdit);
   openModal(popupEdit);
 });
 
 buttonAdd.addEventListener('click', function () {
+  clearValidation(formAdd, validationConfigAdd);
   openModal(popupAdd);
 });
 
