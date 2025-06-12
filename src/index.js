@@ -1,6 +1,7 @@
 import { renderCard, deleteCard, toggleLikeButton } from './scripts/card';
 import { initialCards } from './scripts/cards';
 import { closeModal, openModal } from './scripts/modal';
+import { enableValidation } from './scripts/validation';
 
 import './pages/index.css';
 
@@ -128,4 +129,13 @@ popups.forEach(function (popup) {
       closeModal(popup);
     }
   });
+});
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
 });
