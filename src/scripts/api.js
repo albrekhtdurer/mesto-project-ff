@@ -35,3 +35,21 @@ export const getInitialCards = () => {
     return Promise.reject(`Ошибка: ${res.status}`);
   })
 }
+
+export const editUserProfile = (name, desciprtion) => {
+  const url = getFullUrl('/users/me');
+  return fetch(url, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      name: name,
+      about: desciprtion
+    })
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
+}

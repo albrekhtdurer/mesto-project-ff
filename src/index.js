@@ -2,7 +2,7 @@ import { renderCard, deleteCard, toggleLikeButton } from './scripts/card';
 import { initialCards } from './scripts/cards';
 import { closeModal, openModal } from './scripts/modal';
 import { enableValidation, clearValidation } from './scripts/validation';
-import { getCurrentUser, getInitialCards } from './scripts/api';
+import { getCurrentUser, getInitialCards, editUserProfile } from './scripts/api';
 
 import './pages/index.css';
 
@@ -121,14 +121,20 @@ Promise.all([getCurrentUser(), getInitialCards()])
     });
   })
   .catch((err) => {
-    alert(err);
+    console.log(err);
   });
 
 
 function handleFormEditSubmit(evt) {
   evt.preventDefault();
-  profileTitle.textContent = formEditName.value;
-  profileDescription.textContent = formEditDescription.value;
+  editUserProfile(formEditName.value, formEditDescription.value)
+    .then((result) => {
+      profileTitle.textContent = result.name;
+      profileDescription.textContent = result.about;    
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   closeModal(popupEdit);
 }
 
