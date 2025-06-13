@@ -2,6 +2,7 @@ import { renderCard, deleteCard, toggleLikeButton } from './scripts/card';
 import { initialCards } from './scripts/cards';
 import { closeModal, openModal } from './scripts/modal';
 import { enableValidation, clearValidation } from './scripts/validation';
+import { getCurrentUser } from './scripts/api';
 
 import './pages/index.css';
 
@@ -34,6 +35,7 @@ const validationConfigEdit = {
 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+const profileImage = document.querySelector('.profile__image');
 
 const popupEdit = document.querySelector('.popup_type_edit');
 const buttonEdit = document.querySelector('.profile__edit-button');
@@ -54,6 +56,22 @@ const popupAdd = document.querySelector('.popup_type_new-card');
 const buttonAdd = document.querySelector('.profile__add-button');
 
 const popups = [popupAdd, popupEdit, cardPopup];
+
+getCurrentUser()
+  .then((currentUser) => {
+    if (currentUser.name) {
+      profileTitle.textContent = currentUser.name;
+    }
+    if (currentUser.about) {
+      profileDescription.textContent = currentUser.about;
+    }
+    if (currentUser.avatar) {
+      profileImage.style.backgroundImage = `url(${currentUser.avatar})`;
+    }
+  })
+  .catch((err) => {
+    alert(err);
+  });
 
 /**
  * @function createCardPopup - рендерит попап с изображением карточки
