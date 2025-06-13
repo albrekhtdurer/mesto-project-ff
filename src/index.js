@@ -2,7 +2,7 @@ import { renderCard, deleteCard, toggleLikeButton } from './scripts/card';
 import { initialCards } from './scripts/cards';
 import { closeModal, openModal } from './scripts/modal';
 import { enableValidation, clearValidation } from './scripts/validation';
-import { getCurrentUser } from './scripts/api';
+import { getCurrentUser, getInitialCards } from './scripts/api';
 
 import './pages/index.css';
 
@@ -57,22 +57,6 @@ const buttonAdd = document.querySelector('.profile__add-button');
 
 const popups = [popupAdd, popupEdit, cardPopup];
 
-getCurrentUser()
-  .then((currentUser) => {
-    if (currentUser.name) {
-      profileTitle.textContent = currentUser.name;
-    }
-    if (currentUser.about) {
-      profileDescription.textContent = currentUser.about;
-    }
-    if (currentUser.avatar) {
-      profileImage.style.backgroundImage = `url(${currentUser.avatar})`;
-    }
-  })
-  .catch((err) => {
-    alert(err);
-  });
-
 /**
  * @function createCardPopup - рендерит попап с изображением карточки
  * @param {Event} evt эвент события
@@ -112,6 +96,34 @@ initialCards.forEach(function (card) {
   );
   addCardOnPage(renderedCard, 'end', displayedCards);
 });
+
+//TODO: когда появятся новые карточки, грохнуть старые
+Promise.all([getCurrentUser(), getInitialCards()])
+  .then((results) => {
+    const [currentUser, newInitialCards] = results;
+    if (currentUser.name) {
+      profileTitle.textContent = currentUser.name;
+    }
+    if (currentUser.about) {
+      profileDescription.textContent = currentUser.about;
+    }
+    if (currentUser.avatar) {
+      profileImage.style.backgroundImage = `url(${currentUser.avatar})`;
+    }
+    newInitialCards.forEach(function (card) {
+      const renderedCard = renderCard(
+        card,
+        deleteCard,
+        toggleLikeButton,
+        createCardPopup
+      );
+      addCardOnPage(renderedCard, 'end', displayedCards);
+    });
+  })
+  .catch((err) => {
+    alert(err);
+  });
+
 
 function handleFormEditSubmit(evt) {
   evt.preventDefault();

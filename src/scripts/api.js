@@ -22,3 +22,16 @@ export const getCurrentUser = () => {
     return Promise.reject(`Ошибка: ${res.status}`);
   });
 };
+
+export const getInitialCards = () => {
+  const url = getFullUrl('/cards');
+  return fetch(url, {
+    method: 'GET',
+    headers: config.headers
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  })
+}
