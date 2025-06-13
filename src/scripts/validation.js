@@ -137,11 +137,11 @@ export function clearValidation(formElement, validationConfig) {
       inputTextsToClear.includes(inputElement.id)
     ) {
       inputElement.value = '';
-      changeButtonState(
-        inputList,
-        buttonElement,
-        validationConfig.inactiveButtonClass
-      );
     }
+    changeButtonState(
+      inputList,
+      buttonElement,
+      validationConfig.inactiveButtonClass
+    );
   });
 }

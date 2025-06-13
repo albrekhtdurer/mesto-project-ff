@@ -31,6 +31,8 @@ const validationConfigEdit = {
   inputSelector: '.popup__input',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
 };
 
 const profileTitle = document.querySelector('.profile__title');
