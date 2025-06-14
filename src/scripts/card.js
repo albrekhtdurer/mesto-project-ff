@@ -27,6 +27,10 @@ export function renderCard(
   deleteButton.addEventListener('click', deleteFunc);
   const likeButton = card.querySelector('.card__like-button');
   likeButton.addEventListener('click', likeFunc);
+  if (cardData.likes && cardData.likes.length > 0) {
+    const cardLikes = card.querySelector('.card__likes');
+    cardLikes.textContent = cardData.likes.length;
+  }
   return card;
 }
 

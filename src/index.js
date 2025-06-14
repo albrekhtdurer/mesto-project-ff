@@ -2,7 +2,7 @@ import { renderCard, deleteCard, toggleLikeButton } from './scripts/card';
 import { initialCards } from './scripts/cards';
 import { closeModal, openModal } from './scripts/modal';
 import { enableValidation, clearValidation } from './scripts/validation';
-import { getCurrentUser, getInitialCards, editUserProfile } from './scripts/api';
+import { getCurrentUser, getInitialCards, editUserProfile, createCard } from './scripts/api';
 
 import './pages/index.css';
 
@@ -158,16 +158,22 @@ buttonAdd.addEventListener('click', function () {
 
 function handleFormAddSubmit(evt) {
   evt.preventDefault();
-  const cardData = { name: formAddPlaceName.value, link: formAddLink.value };
-  const renderedCard = renderCard(
-    cardData,
-    deleteCard,
-    toggleLikeButton,
-    createCardPopup
-  );
-  addCardOnPage(renderedCard, 'start', displayedCards);
-  formAdd.reset();
-  closeModal(popupAdd);
+  createCard(formAddPlaceName.value, formAddLink.value)
+    .then((result) => {
+      const cardData = { name: result.name, link: result.link, likes: result.likes };
+      const renderedCard = renderCard(
+        cardData,
+        deleteCard,
+        toggleLikeButton,
+        createCardPopup
+      );
+      addCardOnPage(renderedCard, 'start', displayedCards);
+      formAdd.reset();
+      closeModal(popupAdd);    
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 }
 
 formAdd.addEventListener('submit', handleFormAddSubmit);
