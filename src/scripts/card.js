@@ -8,6 +8,7 @@
  */
 export function renderCard(
   cardData,
+  canDeleteCard,
   deleteFunc,
   likeFunc,
   createCardPopupFunc
@@ -24,7 +25,11 @@ export function renderCard(
   cardImage.alt = cardData.name;
   cardImage.addEventListener('click', createCardPopupFunc);
   const deleteButton = card.querySelector('.card__delete-button');
-  deleteButton.addEventListener('click', deleteFunc);
+  if (canDeleteCard) {
+    deleteButton.addEventListener('click', deleteFunc);
+  } else {
+    deleteButton.remove();
+  }
   const likeButton = card.querySelector('.card__like-button');
   likeButton.addEventListener('click', likeFunc);
   if (cardData.likes && cardData.likes.length > 0) {

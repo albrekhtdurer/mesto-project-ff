@@ -92,6 +92,7 @@ displayedCards.addEventListener('click', function (evt) {
 initialCards.forEach(function (card) {
   const renderedCard = renderCard(
     card,
+    true,
     deleteCard,
     toggleLikeButton,
     createCardPopup
@@ -112,9 +113,12 @@ Promise.all([getCurrentUser(), getInitialCards()])
     if (currentUser.avatar) {
       profileImage.style.backgroundImage = `url(${currentUser.avatar})`;
     }
+    const currentUserId = currentUser._id;
     newInitialCards.forEach(function (card) {
+      const canDeleteCard = currentUserId === card.owner._id;
       const renderedCard = renderCard(
         card,
+        canDeleteCard,
         deleteCard,
         toggleLikeButton,
         createCardPopup
