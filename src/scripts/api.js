@@ -82,6 +82,34 @@ export const deleteCard = (cardId) => {
       if (res.ok) {
         return true;
       }
-      return Promise.reject(`ОШибка: ${res.status}`);
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+}
+
+export const addLike = (cardId) => {
+  const url = getFullUrl(`/cards/likes/${cardId}`);
+  return fetch(url, {
+    method: 'PUT',
+    headers: config.headers
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+}
+
+export const removeLike = (cardId) => {
+  const url = getFullUrl(`/cards/likes/${cardId}`);
+  return fetch(url, {
+    method: 'DELETE',
+    headers: config.headers
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     })
 }

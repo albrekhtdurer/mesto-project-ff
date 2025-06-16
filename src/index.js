@@ -1,7 +1,7 @@
 import { renderCard, deleteCardFromPage, toggleLikeButton } from './scripts/card';
 import { closeModal, openModal } from './scripts/modal';
 import { enableValidation, clearValidation } from './scripts/validation';
-import { getCurrentUser, getInitialCards, editUserProfile, createCard, deleteCard } from './scripts/api';
+import { getCurrentUser, getInitialCards, editUserProfile, createCard, deleteCard, addLike, removeLike } from './scripts/api';
 
 import './pages/index.css';
 
@@ -101,6 +101,25 @@ function handleCardDelete(evt) {
     })
 }
 
+function handleLike(evt) {
+  const currentCard = evt.currentTarget.closest('.card');
+  const id = currentCard.id;
+  const funcToHandleLike = evt.currentTarget.classList.contains('card__like-button_is-active') ? removeLike : addLike;
+  funcToHandleLike(id)
+    .then((res) => {
+      const cardLikes = currentCard.querySelector('.card__likes');
+      if (res.likes.length > 0) {
+        cardLikes.textContent = res.likes.length;
+      } else if (res.likes.length === 0) {
+        cardLikes.remove();
+      }
+      toggleLikeButton(evt);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}
+
 //TODO: когда появятся новые карточки, грохнуть старые
 Promise.all([getCurrentUser(), getInitialCards()])
   .then((results) => {
@@ -121,7 +140,7 @@ Promise.all([getCurrentUser(), getInitialCards()])
         card,
         canDeleteCard,
         handleCardDelete,
-        toggleLikeButton,
+        handleLike,
         createCardPopup
       );
       addCardOnPage(renderedCard, 'end', displayedCards);
