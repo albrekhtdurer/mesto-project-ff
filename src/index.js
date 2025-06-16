@@ -56,7 +56,19 @@ const validationConfigAdd = {
 const popupAdd = document.querySelector('.popup_type_new-card');
 const buttonAdd = document.querySelector('.profile__add-button');
 
-const popups = [popupAdd, popupEdit, cardPopup];
+const formAvatar = document.forms['edit-avatar'];
+const validationConfigAvatar = {
+  inputSelector: '.popup__input',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
+  inputTextsToClear: ['avatar-url'],
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+};
+
+const popupAvatar = document.querySelector('.popup_type_edit_avatar');
+
+const popups = [popupAdd, popupEdit, cardPopup, popupAvatar];
 
 /**
  * @function createCardPopup - рендерит попап с изображением карточки
@@ -201,6 +213,11 @@ function handleFormAddSubmit(evt) {
 }
 
 formAdd.addEventListener('submit', handleFormAddSubmit);
+
+profileImage.addEventListener('click', function () {
+  clearValidation(formAvatar, validationConfigAvatar);
+  openModal(popupAvatar);
+})
 
 popups.forEach(function (popup) {
   popup.addEventListener('click', function (evt) {
