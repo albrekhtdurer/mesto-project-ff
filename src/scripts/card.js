@@ -18,6 +18,7 @@ export function renderCard(
   }
   const cardTemplate = document.querySelector('#card-template').content;
   const card = cardTemplate.querySelector('.card').cloneNode(true);
+  card.id = cardData._id;
   const cardTitle = card.querySelector('.card__title');
   const cardImage = card.querySelector('.card__image');
   cardTitle.textContent = cardData.name;
@@ -40,11 +41,10 @@ export function renderCard(
 }
 
 /**
- * @function deleteCard - удаляет карточку со страницы
- * @param {Event} evt эвент события
+ * @function deleteCardFromPage - удаляет карточку со страницы
+ * @param {HTMLElement} cardToDelete эвент события
  */
-export function deleteCard(evt) {
-  const cardToDelete = evt.currentTarget.closest('.card');
+export function deleteCardFromPage(cardToDelete) {
   cardToDelete.remove();
 }
 

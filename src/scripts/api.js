@@ -71,3 +71,17 @@ export const createCard = (name, link) => {
       return Promise.reject(`Ошибка: ${res.status}`);
     })
 }
+
+export const deleteCard = (cardId) => {
+  const url = getFullUrl(`/cards/${cardId}`);
+  return fetch(url, {
+    method: 'DELETE',
+    headers: config.headers
+  })
+    .then((res) => {
+      if (res.ok) {
+        return true;
+      }
+      return Promise.reject(`ОШибка: ${res.status}`);
+    })
+}
