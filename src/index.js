@@ -1,7 +1,7 @@
 import { renderCard, deleteCardFromPage, toggleLikeButton } from './scripts/card';
 import { closeModal, openModal } from './scripts/modal';
 import { enableValidation, clearValidation } from './scripts/validation';
-import { getCurrentUser, getInitialCards, editUserProfile, createCard, deleteCard, addLike, removeLike } from './scripts/api';
+import { getCurrentUser, getInitialCards, editUserProfile, createCard, deleteCard, addLike, removeLike, editAvatar, validateAvatarLink } from './scripts/api';
 
 import './pages/index.css';
 
@@ -57,6 +57,7 @@ const popupAdd = document.querySelector('.popup_type_new-card');
 const buttonAdd = document.querySelector('.profile__add-button');
 
 const formAvatar = document.forms['edit-avatar'];
+const formAvatarUrl = formAvatar.elements['avatar-url'];
 const validationConfigAvatar = {
   inputSelector: '.popup__input',
   inputErrorClass: 'popup__input_type_error',
@@ -213,6 +214,26 @@ function handleFormAddSubmit(evt) {
 }
 
 formAdd.addEventListener('submit', handleFormAddSubmit);
+
+function handleAvatarSubmit(evt) {
+  evt.preventDefault();
+  validateAvatarLink(formAvatarUrl.value)
+    .then((res) => {
+      if (res.startsWith('image/')) {
+        editAvatar(formAvatarUrl.value)
+        .then((res) => {
+          profileImage.style.backgroundImage = `url(${res.avatar})`;
+          formAvatar.reset();
+          closeModal(popupAvatar);
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}
+
+formAvatar.addEventListener('submit', handleAvatarSubmit);
 
 profileImage.addEventListener('click', function () {
   clearValidation(formAvatar, validationConfigAvatar);

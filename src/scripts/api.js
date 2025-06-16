@@ -113,3 +113,32 @@ export const removeLike = (cardId) => {
       return Promise.reject(`Ошибка: ${res.status}`);
     })
 }
+
+export const validateAvatarLink = (avatarLink) => {
+  return fetch(avatarLink, {
+    method: 'HEAD'
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.headers.get("content-type");
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+}
+
+export const editAvatar = (avatarLink) => {
+  const url = getFullUrl('/users/me/avatar');
+  return fetch(url, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar: avatarLink,
+    })
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+}
