@@ -1,5 +1,4 @@
 import { renderCard, deleteCardFromPage, toggleLikeButton } from './scripts/card';
-import { initialCards } from './scripts/cards';
 import { closeModal, openModal } from './scripts/modal';
 import { enableValidation, clearValidation } from './scripts/validation';
 import { getCurrentUser, getInitialCards, editUserProfile, createCard, deleteCard } from './scripts/api';
@@ -88,17 +87,6 @@ displayedCards.addEventListener('click', function (evt) {
     openModal(cardPopup);
   }
 });
-
-// initialCards.forEach(function (card) {
-//   const renderedCard = renderCard(
-//     card,
-//     true,
-//     deleteCard,
-//     toggleLikeButton,
-//     createCardPopup
-//   );
-//   addCardOnPage(renderedCard, 'end', displayedCards);
-// });
 
 function handleCardDelete(evt) {
   const cardToDelete = evt.currentTarget.closest('.card');
