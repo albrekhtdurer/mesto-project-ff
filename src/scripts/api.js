@@ -19,7 +19,7 @@ export const getCurrentUser = () => {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return Promise.reject(`Ошибка при получении данных пользователя: ${res.status}. Перезагрузите страницу`);
   });
 };
 
@@ -32,7 +32,7 @@ export const getInitialCards = () => {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return Promise.reject(`Ошибка при получении карточек: ${res.status}. Перезагрузите страницу`);
   })
 }
 
@@ -50,7 +50,7 @@ export const editUserProfile = (name, desciprtion) => {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return Promise.reject(`Ошибка при редактировании профиля: ${res.status}`);
     });
 }
 
@@ -68,7 +68,7 @@ export const createCard = (name, link) => {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return Promise.reject(`Ошибка при добавлении карточки: ${res.status}`);
     })
 }
 
@@ -82,7 +82,7 @@ export const deleteCard = (cardId) => {
       if (res.ok) {
         return true;
       }
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return Promise.reject(`Ошибка при удалении карточки: ${res.status}`);
     })
 }
 
@@ -96,7 +96,7 @@ export const addLike = (cardId) => {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return Promise.reject(`Ошибка при добавлении лайка: ${res.status}`);
     })
 }
 
@@ -110,7 +110,7 @@ export const removeLike = (cardId) => {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return Promise.reject(`Ошибка при удалении лайка: ${res.status}`);
     })
 }
 
@@ -122,7 +122,7 @@ export const validateAvatarLink = (avatarLink) => {
       if (res.ok) {
         return res.headers.get("content-type");
       }
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return Promise.reject(`Ошибка при обновлении аватара: ${res.status}`);
     })
 }
 
@@ -139,6 +139,6 @@ export const editAvatar = (avatarLink) => {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return Promise.reject(`Ошибка при обновлении аватара: ${res.status}`);
     })
 }

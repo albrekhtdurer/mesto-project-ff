@@ -72,12 +72,25 @@ const validationConfigAvatar = {
 const popupAvatar = document.querySelector('.popup_type_edit_avatar');
 const buttonAvatarSubmit = formAvatar.querySelector('.popup__button');
 
-const popups = [popupAdd, popupEdit, cardPopup, popupAvatar];
+const popupError = document.querySelector('.popup_type_error');
+const popupErrorButton = popupError.querySelector('.popup__button');
+popupErrorButton.addEventListener('click', () => {
+  closeModal(popupError);
+})
+const popupErrorText = popupError.querySelector('.popup__text');
+
+
+const popups = [popupAdd, popupEdit, cardPopup, popupAvatar, popupError];
 
 let currentUserId = '';
 
 function renderLoadingButton(button, buttonText) {
   button.textContent = buttonText;
+}
+
+function renderErrorPopup(err) {
+  popupErrorText.textContent = err;
+  openModal(popupError);
 }
 
 /**
@@ -118,7 +131,7 @@ function handleCardDelete(evt) {
       deleteCardFromPage(cardToDelete);
     })
     .catch((err) => {
-      console.log(err);
+      renderErrorPopup(err);
     })
 }
 
@@ -137,7 +150,7 @@ function handleLike(evt) {
       toggleLikeButton(evt);
     })
     .catch((err) => {
-      console.log(err);
+      renderErrorPopup(err);
     })
 }
 
@@ -166,7 +179,7 @@ Promise.all([getCurrentUser(), getInitialCards()])
     });
   })
   .catch((err) => {
-    console.log(err);
+    renderErrorPopup(err);
   });
 
 
@@ -180,7 +193,7 @@ function handleFormEditSubmit(evt) {
       profileDescription.textContent = result.about;    
     })
     .catch((err) => {
-      console.log(err);
+      renderErrorPopup(err);
     })
     .finally(() => {
       renderLoadingButton(buttonEditSubmit, buttonEditSubmitText);
@@ -224,7 +237,7 @@ function handleFormAddSubmit(evt) {
       closeModal(popupAdd);    
     })
     .catch((err) => {
-      console.log(err);
+      renderErrorPopup(err);
     })
     .finally(() => {
       renderLoadingButton(buttonAddSubmit, buttonAddSubmitText);
@@ -246,10 +259,13 @@ function handleAvatarSubmit(evt) {
           formAvatar.reset();
           closeModal(popupAvatar);
         })
+        .catch((err) => {
+          renderErrorPopup(err);
+        })    
       }
     })
     .catch((err) => {
-      console.log(err);
+      renderErrorPopup(err);
     })
     .finally(() => {
       renderLoadingButton(buttonAvatarSubmit, buttonAvatarSubmitText);
