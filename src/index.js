@@ -1,7 +1,21 @@
-import { renderCard, deleteCardFromPage, toggleLikeButton } from './scripts/card';
+import {
+  renderCard,
+  deleteCardFromPage,
+  toggleLikeButton,
+} from './scripts/card';
 import { closeModal, openModal } from './scripts/modal';
 import { enableValidation, clearValidation } from './scripts/validation';
-import { getCurrentUser, getInitialCards, editUserProfile, createCard, deleteCard, addLike, removeLike, editAvatar, validateAvatarLink } from './scripts/api';
+import {
+  getCurrentUser,
+  getInitialCards,
+  editUserProfile,
+  createCard,
+  deleteCard,
+  addLike,
+  removeLike,
+  editAvatar,
+  validateAvatarLink,
+} from './scripts/api';
 
 import './pages/index.css';
 
@@ -76,13 +90,21 @@ const popupError = document.querySelector('.popup_type_error');
 const popupErrorButton = popupError.querySelector('.popup__button');
 popupErrorButton.addEventListener('click', () => {
   closeModal(popupError);
-})
+});
 const popupErrorText = popupError.querySelector('.popup__text');
 
 const popupConfirmDelete = document.querySelector('.popup_type_confirm_delete');
-const buttonConfirmDeleteSubmit = popupConfirmDelete.querySelector('.popup__button');
+const buttonConfirmDeleteSubmit =
+  popupConfirmDelete.querySelector('.popup__button');
 
-const popups = [popupAdd, popupEdit, cardPopup, popupAvatar, popupError, popupConfirmDelete];
+const popups = [
+  popupAdd,
+  popupEdit,
+  cardPopup,
+  popupAvatar,
+  popupError,
+  popupConfirmDelete,
+];
 
 let currentUserId = '';
 
@@ -131,26 +153,33 @@ function handleCardDelete(evt) {
   openModal(popupConfirmDelete);
   buttonConfirmDeleteSubmit.addEventListener('click', (deleteEvt) => {
     const buttonConfirmDeleteSubmitText = buttonConfirmDeleteSubmit.textContent;
-    renderLoadingButton(buttonConfirmDeleteSubmit, 'Удаление...')
+    renderLoadingButton(buttonConfirmDeleteSubmit, 'Удаление...');
     deleteEvt.preventDefault();
     deleteCard(id)
-    .then(() => {
-      deleteCardFromPage(cardToDelete);
-      closeModal(popupConfirmDelete);
-    })
-    .catch((err) => {
-      renderErrorPopup(err);
-    })
-    .finally(() => {
-      renderLoadingButton(buttonConfirmDeleteSubmit, buttonConfirmDeleteSubmitText);
-    })
-  })
+      .then(() => {
+        deleteCardFromPage(cardToDelete);
+        closeModal(popupConfirmDelete);
+      })
+      .catch((err) => {
+        renderErrorPopup(err);
+      })
+      .finally(() => {
+        renderLoadingButton(
+          buttonConfirmDeleteSubmit,
+          buttonConfirmDeleteSubmitText
+        );
+      });
+  });
 }
 
 function handleLike(evt) {
   const currentCard = evt.currentTarget.closest('.card');
   const id = currentCard.id;
-  const funcToHandleLike = evt.currentTarget.classList.contains('card__like-button_is-active') ? removeLike : addLike;
+  const funcToHandleLike = evt.currentTarget.classList.contains(
+    'card__like-button_is-active'
+  )
+    ? removeLike
+    : addLike;
   funcToHandleLike(id)
     .then((res) => {
       const cardLikes = currentCard.querySelector('.card__likes');
@@ -163,7 +192,7 @@ function handleLike(evt) {
     })
     .catch((err) => {
       renderErrorPopup(err);
-    })
+    });
 }
 
 Promise.all([getCurrentUser(), getInitialCards()])
@@ -194,7 +223,6 @@ Promise.all([getCurrentUser(), getInitialCards()])
     renderErrorPopup(err);
   });
 
-
 function handleFormEditSubmit(evt) {
   evt.preventDefault();
   const buttonEditSubmitText = buttonEditSubmit.textContent;
@@ -202,14 +230,14 @@ function handleFormEditSubmit(evt) {
   editUserProfile(formEditName.value, formEditDescription.value)
     .then((result) => {
       profileTitle.textContent = result.name;
-      profileDescription.textContent = result.about;    
+      profileDescription.textContent = result.about;
     })
     .catch((err) => {
       renderErrorPopup(err);
     })
     .finally(() => {
       renderLoadingButton(buttonEditSubmit, buttonEditSubmitText);
-    })
+    });
 
   closeModal(popupEdit);
 }
@@ -246,14 +274,14 @@ function handleFormAddSubmit(evt) {
       );
       addCardOnPage(renderedCard, 'start', displayedCards);
       formAdd.reset();
-      closeModal(popupAdd);    
+      closeModal(popupAdd);
     })
     .catch((err) => {
       renderErrorPopup(err);
     })
     .finally(() => {
       renderLoadingButton(buttonAddSubmit, buttonAddSubmitText);
-    })
+    });
 }
 
 formAdd.addEventListener('submit', handleFormAddSubmit);
@@ -266,14 +294,14 @@ function handleAvatarSubmit(evt) {
     .then((res) => {
       if (res.startsWith('image/')) {
         editAvatar(formAvatarUrl.value)
-        .then((res) => {
-          profileImage.style.backgroundImage = `url(${res.avatar})`;
-          formAvatar.reset();
-          closeModal(popupAvatar);
-        })
-        .catch((err) => {
-          renderErrorPopup(err);
-        })    
+          .then((res) => {
+            profileImage.style.backgroundImage = `url(${res.avatar})`;
+            formAvatar.reset();
+            closeModal(popupAvatar);
+          })
+          .catch((err) => {
+            renderErrorPopup(err);
+          });
       }
     })
     .catch((err) => {
@@ -281,7 +309,7 @@ function handleAvatarSubmit(evt) {
     })
     .finally(() => {
       renderLoadingButton(buttonAvatarSubmit, buttonAvatarSubmitText);
-    })
+    });
 }
 
 formAvatar.addEventListener('submit', handleAvatarSubmit);
@@ -289,7 +317,7 @@ formAvatar.addEventListener('submit', handleAvatarSubmit);
 profileImage.addEventListener('click', function () {
   clearValidation(formAvatar, validationConfigAvatar);
   openModal(popupAvatar);
-})
+});
 
 popups.forEach(function (popup) {
   popup.addEventListener('click', function (evt) {

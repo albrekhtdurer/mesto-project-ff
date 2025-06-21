@@ -39,7 +39,7 @@ export function renderCard(
     cardLikes.textContent = cardData.likes.length;
     const isLikedBuCurrentUser = cardData.likes.some((like) => {
       return like._id === currentUserId;
-    })
+    });
     if (isLikedBuCurrentUser) {
       likeButton.classList.add('card__like-button_is-active');
     }

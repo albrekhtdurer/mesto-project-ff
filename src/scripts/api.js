@@ -19,7 +19,9 @@ export const getCurrentUser = () => {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Ошибка при получении данных пользователя: ${res.status}. Перезагрузите страницу`);
+    return Promise.reject(
+      `Ошибка при получении данных пользователя: ${res.status}. Перезагрузите страницу`
+    );
   });
 };
 
@@ -27,14 +29,16 @@ export const getInitialCards = () => {
   const url = getFullUrl('/cards');
   return fetch(url, {
     method: 'GET',
-    headers: config.headers
+    headers: config.headers,
   }).then((res) => {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Ошибка при получении карточек: ${res.status}. Перезагрузите страницу`);
-  })
-}
+    return Promise.reject(
+      `Ошибка при получении карточек: ${res.status}. Перезагрузите страницу`
+    );
+  });
+};
 
 export const editUserProfile = (name, desciprtion) => {
   const url = getFullUrl('/users/me');
@@ -43,16 +47,15 @@ export const editUserProfile = (name, desciprtion) => {
     headers: config.headers,
     body: JSON.stringify({
       name: name,
-      about: desciprtion
-    })
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка при редактировании профиля: ${res.status}`);
-    });
-}
+      about: desciprtion,
+    }),
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка при редактировании профиля: ${res.status}`);
+  });
+};
 
 export const createCard = (name, link) => {
   const url = getFullUrl('/cards');
@@ -61,70 +64,65 @@ export const createCard = (name, link) => {
     headers: config.headers,
     body: JSON.stringify({
       name: name,
-      link: link
-    })
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка при добавлении карточки: ${res.status}`);
-    })
-}
+      link: link,
+    }),
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка при добавлении карточки: ${res.status}`);
+  });
+};
 
 export const deleteCard = (cardId) => {
   const url = getFullUrl(`/cards/${cardId}`);
   return fetch(url, {
     method: 'DELETE',
-    headers: config.headers
-  })
-    .then((res) => {
-      if (res.ok) {
-        return true;
-      }
-      return Promise.reject(`Ошибка при удалении карточки: ${res.status}`);
-    })
-}
+    headers: config.headers,
+  }).then((res) => {
+    if (res.ok) {
+      return true;
+    }
+    return Promise.reject(`Ошибка при удалении карточки: ${res.status}`);
+  });
+};
 
 export const addLike = (cardId) => {
   const url = getFullUrl(`/cards/likes/${cardId}`);
   return fetch(url, {
     method: 'PUT',
-    headers: config.headers
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка при добавлении лайка: ${res.status}`);
-    })
-}
+    headers: config.headers,
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка при добавлении лайка: ${res.status}`);
+  });
+};
 
 export const removeLike = (cardId) => {
   const url = getFullUrl(`/cards/likes/${cardId}`);
   return fetch(url, {
     method: 'DELETE',
-    headers: config.headers
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка при удалении лайка: ${res.status}`);
-    })
-}
+    headers: config.headers,
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка при удалении лайка: ${res.status}`);
+  });
+};
 
 export const validateAvatarLink = (avatarLink) => {
   return fetch(avatarLink, {
-    method: 'HEAD'
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.headers.get("content-type");
-      }
-      return Promise.reject(`Ошибка при обновлении аватара: ${res.status}`);
-    })
-}
+    method: 'HEAD',
+  }).then((res) => {
+    if (res.ok) {
+      return res.headers.get('content-type');
+    }
+    return Promise.reject(`Ошибка при обновлении аватара: ${res.status}`);
+  });
+};
 
 export const editAvatar = (avatarLink) => {
   const url = getFullUrl('/users/me/avatar');
@@ -133,12 +131,11 @@ export const editAvatar = (avatarLink) => {
     headers: config.headers,
     body: JSON.stringify({
       avatar: avatarLink,
-    })
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка при обновлении аватара: ${res.status}`);
-    })
-}
+    }),
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка при обновлении аватара: ${res.status}`);
+  });
+};
