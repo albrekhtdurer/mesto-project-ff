@@ -37,7 +37,7 @@ export function renderCard(
   if (cardData.likes && cardData.likes.length > 0) {
     const cardLikes = card.querySelector('.card__likes');
     cardLikes.textContent = cardData.likes.length;
-    const isLikedBuCurrentUser = cardLikes.some((like) => {
+    const isLikedBuCurrentUser = cardData.likes.some((like) => {
       return like._id === currentUserId;
     })
     if (isLikedBuCurrentUser) {
