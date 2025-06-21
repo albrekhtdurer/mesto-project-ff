@@ -74,6 +74,8 @@ const buttonAvatarSubmit = formAvatar.querySelector('.popup__button');
 
 const popups = [popupAdd, popupEdit, cardPopup, popupAvatar];
 
+let currentUserId = '';
+
 function renderLoadingButton(button, buttonText) {
   button.textContent = buttonText;
 }
@@ -151,15 +153,14 @@ Promise.all([getCurrentUser(), getInitialCards()])
     if (currentUser.avatar) {
       profileImage.style.backgroundImage = `url(${currentUser.avatar})`;
     }
-    const currentUserId = currentUser._id;
+    currentUserId = currentUser._id;
     newInitialCards.forEach(function (card) {
-      const canDeleteCard = currentUserId === card.owner._id;
       const renderedCard = renderCard(
         card,
         handleCardDelete,
         handleLike,
         createCardPopup,
-        canDeleteCard
+        currentUserId
       );
       addCardOnPage(renderedCard, 'end', displayedCards);
     });
@@ -216,7 +217,7 @@ function handleFormAddSubmit(evt) {
         handleCardDelete,
         handleLike,
         createCardPopup,
-        true
+        currentUserId
       );
       addCardOnPage(renderedCard, 'start', displayedCards);
       formAdd.reset();

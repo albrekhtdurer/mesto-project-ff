@@ -11,7 +11,7 @@ export function renderCard(
   deleteFunc,
   likeFunc,
   createCardPopupFunc,
-  canDeleteCard
+  currentUserId
 ) {
   if (typeof cardData !== 'object' || !cardData.name || !cardData.link) {
     return;
@@ -26,6 +26,7 @@ export function renderCard(
   cardImage.alt = cardData.name;
   cardImage.addEventListener('click', createCardPopupFunc);
   const deleteButton = card.querySelector('.card__delete-button');
+  const canDeleteCard = currentUserId === cardData.owner._id;
   if (canDeleteCard) {
     deleteButton.addEventListener('click', deleteFunc);
   } else {
@@ -36,6 +37,12 @@ export function renderCard(
   if (cardData.likes && cardData.likes.length > 0) {
     const cardLikes = card.querySelector('.card__likes');
     cardLikes.textContent = cardData.likes.length;
+    const isLikedBuCurrentUser = cardLikes.some((like) => {
+      return like._id === currentUserId;
+    })
+    if (isLikedBuCurrentUser) {
+      likeButton.classList.add('card__like-button_is-active');
+    }
   }
   return card;
 }
