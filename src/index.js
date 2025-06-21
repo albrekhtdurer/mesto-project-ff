@@ -40,6 +40,7 @@ const profileImage = document.querySelector('.profile__image');
 
 const popupEdit = document.querySelector('.popup_type_edit');
 const buttonEdit = document.querySelector('.profile__edit-button');
+const buttonEditSubmit = formEdit.querySelector('.popup__button');
 
 const formAdd = document.forms['new-place'];
 const formAddPlaceName = formAdd.elements['place-name'];
@@ -55,6 +56,7 @@ const validationConfigAdd = {
 
 const popupAdd = document.querySelector('.popup_type_new-card');
 const buttonAdd = document.querySelector('.profile__add-button');
+const buttonAddSubmit = formAdd.querySelector('.popup__button');
 
 const formAvatar = document.forms['edit-avatar'];
 const formAvatarUrl = formAvatar.elements['avatar-url'];
@@ -68,8 +70,13 @@ const validationConfigAvatar = {
 };
 
 const popupAvatar = document.querySelector('.popup_type_edit_avatar');
+const buttonAvatarSubmit = formAvatar.querySelector('.popup__button');
 
 const popups = [popupAdd, popupEdit, cardPopup, popupAvatar];
+
+function renderLoadingButton(button, buttonText) {
+  button.textContent = buttonText;
+}
 
 /**
  * @function createCardPopup - рендерит попап с изображением карточки
@@ -104,7 +111,6 @@ displayedCards.addEventListener('click', function (evt) {
 function handleCardDelete(evt) {
   const cardToDelete = evt.currentTarget.closest('.card');
   const id = cardToDelete.id;
-  console.log(id);
   deleteCard(id)
     .then(() => {
       deleteCardFromPage(cardToDelete);
@@ -151,10 +157,10 @@ Promise.all([getCurrentUser(), getInitialCards()])
       const canDeleteCard = currentUserId === card.owner._id;
       const renderedCard = renderCard(
         card,
-        canDeleteCard,
         handleCardDelete,
         handleLike,
-        createCardPopup
+        createCardPopup,
+        canDeleteCard
       );
       addCardOnPage(renderedCard, 'end', displayedCards);
     });
@@ -166,6 +172,8 @@ Promise.all([getCurrentUser(), getInitialCards()])
 
 function handleFormEditSubmit(evt) {
   evt.preventDefault();
+  const buttonEditSubmitText = buttonEditSubmit.textContent;
+  renderLoadingButton(buttonEditSubmit, 'Сохранение...');
   editUserProfile(formEditName.value, formEditDescription.value)
     .then((result) => {
       profileTitle.textContent = result.name;
@@ -174,6 +182,10 @@ function handleFormEditSubmit(evt) {
     .catch((err) => {
       console.log(err);
     })
+    .finally(() => {
+      renderLoadingButton(buttonEditSubmit, buttonEditSubmitText);
+    })
+
   closeModal(popupEdit);
 }
 
@@ -195,14 +207,17 @@ buttonAdd.addEventListener('click', function () {
 
 function handleFormAddSubmit(evt) {
   evt.preventDefault();
+  const buttonAddSubmitText = buttonAddSubmit.textContent;
+  renderLoadingButton(buttonAddSubmit, 'Сохранение...');
   createCard(formAddPlaceName.value, formAddLink.value)
     .then((result) => {
-      const cardData = { name: result.name, link: result.link, likes: result.likes };
+      const cardData = result;
       const renderedCard = renderCard(
         cardData,
-        deleteCard,
-        toggleLikeButton,
-        createCardPopup
+        handleCardDelete,
+        handleLike,
+        createCardPopup,
+        true
       );
       addCardOnPage(renderedCard, 'start', displayedCards);
       formAdd.reset();
@@ -211,12 +226,17 @@ function handleFormAddSubmit(evt) {
     .catch((err) => {
       console.log(err);
     })
+    .finally(() => {
+      renderLoadingButton(buttonAddSubmit, buttonAddSubmitText);
+    })
 }
 
 formAdd.addEventListener('submit', handleFormAddSubmit);
 
 function handleAvatarSubmit(evt) {
   evt.preventDefault();
+  const buttonAvatarSubmitText = buttonAvatarSubmit.textContent;
+  renderLoadingButton(buttonAvatarSubmit, 'Сохранение...');
   validateAvatarLink(formAvatarUrl.value)
     .then((res) => {
       if (res.startsWith('image/')) {
@@ -230,6 +250,9 @@ function handleAvatarSubmit(evt) {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      renderLoadingButton(buttonAvatarSubmit, buttonAvatarSubmitText);
     })
 }
 

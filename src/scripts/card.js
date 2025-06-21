@@ -8,10 +8,10 @@
  */
 export function renderCard(
   cardData,
-  canDeleteCard,
   deleteFunc,
   likeFunc,
-  createCardPopupFunc
+  createCardPopupFunc,
+  canDeleteCard
 ) {
   if (typeof cardData !== 'object' || !cardData.name || !cardData.link) {
     return;
