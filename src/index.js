@@ -139,7 +139,6 @@ function handleLike(evt) {
     })
 }
 
-//TODO: когда появятся новые карточки, грохнуть старые
 Promise.all([getCurrentUser(), getInitialCards()])
   .then((results) => {
     const [currentUser, newInitialCards] = results;
