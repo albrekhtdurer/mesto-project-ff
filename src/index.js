@@ -79,8 +79,10 @@ popupErrorButton.addEventListener('click', () => {
 })
 const popupErrorText = popupError.querySelector('.popup__text');
 
+const popupConfirmDelete = document.querySelector('.popup_type_confirm_delete');
+const buttonConfirmDeleteSubmit = popupConfirmDelete.querySelector('.popup__button');
 
-const popups = [popupAdd, popupEdit, cardPopup, popupAvatar, popupError];
+const popups = [popupAdd, popupEdit, cardPopup, popupAvatar, popupError, popupConfirmDelete];
 
 let currentUserId = '';
 
@@ -126,13 +128,23 @@ displayedCards.addEventListener('click', function (evt) {
 function handleCardDelete(evt) {
   const cardToDelete = evt.currentTarget.closest('.card');
   const id = cardToDelete.id;
-  deleteCard(id)
+  openModal(popupConfirmDelete);
+  buttonConfirmDeleteSubmit.addEventListener('click', (deleteEvt) => {
+    const buttonConfirmDeleteSubmitText = buttonConfirmDeleteSubmit.textContent;
+    renderLoadingButton(buttonConfirmDeleteSubmit, 'Удаление...')
+    deleteEvt.preventDefault();
+    deleteCard(id)
     .then(() => {
       deleteCardFromPage(cardToDelete);
+      closeModal(popupConfirmDelete);
     })
     .catch((err) => {
       renderErrorPopup(err);
     })
+    .finally(() => {
+      renderLoadingButton(buttonConfirmDeleteSubmit, buttonConfirmDeleteSubmitText);
+    })
+  })
 }
 
 function handleLike(evt) {
