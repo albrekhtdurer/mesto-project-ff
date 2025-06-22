@@ -231,6 +231,7 @@ function handleFormEditSubmit(evt) {
     .then((result) => {
       profileTitle.textContent = result.name;
       profileDescription.textContent = result.about;
+      closeModal(popupEdit);
     })
     .catch((err) => {
       renderErrorPopup(err);
@@ -238,8 +239,6 @@ function handleFormEditSubmit(evt) {
     .finally(() => {
       renderLoadingButton(buttonEditSubmit, buttonEditSubmitText);
     });
-
-  closeModal(popupEdit);
 }
 
 formEdit.addEventListener('submit', handleFormEditSubmit);
