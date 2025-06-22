@@ -28,7 +28,9 @@ export function renderCard(
   const deleteButton = card.querySelector('.card__delete-button');
   const canDeleteCard = currentUserId === cardData.owner._id;
   if (canDeleteCard) {
-    deleteButton.addEventListener('click', deleteFunc);
+    deleteButton.addEventListener('click', () => {
+      deleteFunc(card, card.id);
+    });
   } else {
     deleteButton.remove();
   }

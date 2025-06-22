@@ -96,6 +96,7 @@ const popupErrorText = popupError.querySelector('.popup__text');
 const popupConfirmDelete = document.querySelector('.popup_type_confirm_delete');
 const buttonConfirmDeleteSubmit =
   popupConfirmDelete.querySelector('.popup__button');
+const buttonConfirmDeleteSubmitText = buttonConfirmDeleteSubmit.textContent;
 
 const popups = [
   popupAdd,
@@ -106,7 +107,9 @@ const popups = [
   popupConfirmDelete,
 ];
 
-let currentUserId = '';
+let currentUserId;
+let cardToDelete;
+let cardToDeleteId;
 
 function renderLoadingButton(button, buttonText) {
   button.textContent = buttonText;
@@ -148,28 +151,30 @@ displayedCards.addEventListener('click', function (evt) {
 });
 
 function handleCardDelete(evt) {
-  const cardToDelete = evt.currentTarget.closest('.card');
-  const id = cardToDelete.id;
+  renderLoadingButton(buttonConfirmDeleteSubmit, 'Удаление...');
+  evt.preventDefault();
+  deleteCard(cardToDeleteId)
+  .then(() => {
+      deleteCardFromPage(cardToDelete);
+      closeModal(popupConfirmDelete);
+    })
+    .catch((err) => {
+      renderErrorPopup(err);
+    })
+    .finally(() => {
+      renderLoadingButton(
+        buttonConfirmDeleteSubmit,
+        buttonConfirmDeleteSubmitText
+      );
+    });
+}
+
+function handleDeleteButtonClick(card, cardId) {
+  cardToDelete = card;
+  cardToDeleteId = cardId;
+  console.log(cardToDeleteId);
   openModal(popupConfirmDelete);
-  buttonConfirmDeleteSubmit.addEventListener('click', (deleteEvt) => {
-    const buttonConfirmDeleteSubmitText = buttonConfirmDeleteSubmit.textContent;
-    renderLoadingButton(buttonConfirmDeleteSubmit, 'Удаление...');
-    deleteEvt.preventDefault();
-    deleteCard(id)
-      .then(() => {
-        deleteCardFromPage(cardToDelete);
-        closeModal(popupConfirmDelete);
-      })
-      .catch((err) => {
-        renderErrorPopup(err);
-      })
-      .finally(() => {
-        renderLoadingButton(
-          buttonConfirmDeleteSubmit,
-          buttonConfirmDeleteSubmitText
-        );
-      });
-  });
+  buttonConfirmDeleteSubmit.addEventListener('click', handleCardDelete);
 }
 
 function handleLike(evt) {
@@ -211,7 +216,7 @@ Promise.all([getCurrentUser(), getInitialCards()])
     newInitialCards.forEach(function (card) {
       const renderedCard = renderCard(
         card,
-        handleCardDelete,
+        handleDeleteButtonClick,
         handleLike,
         createCardPopup,
         currentUserId
@@ -266,7 +271,7 @@ function handleFormAddSubmit(evt) {
       const cardData = result;
       const renderedCard = renderCard(
         cardData,
-        handleCardDelete,
+        handleDeleteButtonClick,
         handleLike,
         createCardPopup,
         currentUserId
@@ -325,6 +330,9 @@ popups.forEach(function (popup) {
       evt.target.classList.contains('popup__close')
     ) {
       closeModal(popup);
+    }
+    if (evt.target.classList.contains('popup_type_confirm_delete')) {
+      buttonConfirmDeleteSubmit.removeEventListener('click', handleCardDelete);
     }
   });
 });
