@@ -130,6 +130,11 @@ function createCardPopup(evt) {
   cardPopupTitle.textContent = evt.target.alt;
 }
 
+function handleCardImageClick(evt) {
+  createCardPopup(evt);
+  openModal(cardPopup);
+}
+
 /**
  * @function addCardOnPage - добавляет карточку на страницу
  * @param {HTMLElement} card           DOM-элемент карточки
@@ -143,12 +148,6 @@ function addCardOnPage(card, position, displayedCards) {
     displayedCards.append(card);
   }
 }
-
-displayedCards.addEventListener('click', function (evt) {
-  if (evt.target.classList.contains('card__image')) {
-    openModal(cardPopup);
-  }
-});
 
 function handleCardDelete(evt) {
   renderLoadingButton(buttonConfirmDeleteSubmit, 'Удаление...');
@@ -218,7 +217,7 @@ Promise.all([getCurrentUser(), getInitialCards()])
         card,
         handleDeleteButtonClick,
         handleLike,
-        createCardPopup,
+        handleCardImageClick,
         currentUserId
       );
       addCardOnPage(renderedCard, 'end', displayedCards);
@@ -273,7 +272,7 @@ function handleFormAddSubmit(evt) {
         cardData,
         handleDeleteButtonClick,
         handleLike,
-        createCardPopup,
+        handleCardImageClick,
         currentUserId
       );
       addCardOnPage(renderedCard, 'start', displayedCards);
