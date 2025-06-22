@@ -1,3 +1,5 @@
+import {checkResponse} from './utils';
+
 const config = {
   baseUrl: 'https://mesto.nomoreparties.co/v1/wff-cohort-41',
   headers: {
@@ -15,14 +17,7 @@ export const getCurrentUser = () => {
   return fetch(url, {
     method: 'GET',
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(
-      `Ошибка при получении данных пользователя: ${res.status}. Перезагрузите страницу`
-    );
-  });
+  }).then(checkResponse);
 };
 
 export const getInitialCards = () => {
@@ -30,14 +25,7 @@ export const getInitialCards = () => {
   return fetch(url, {
     method: 'GET',
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(
-      `Ошибка при получении карточек: ${res.status}. Перезагрузите страницу`
-    );
-  });
+  }).then(checkResponse);
 };
 
 export const editUserProfile = (name, desciprtion) => {
@@ -49,12 +37,7 @@ export const editUserProfile = (name, desciprtion) => {
       name: name,
       about: desciprtion,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка при редактировании профиля: ${res.status}`);
-  });
+  }).then(checkResponse);
 };
 
 export const createCard = (name, link) => {
@@ -66,12 +49,7 @@ export const createCard = (name, link) => {
       name: name,
       link: link,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка при добавлении карточки: ${res.status}`);
-  });
+  }).then(checkResponse);
 };
 
 export const deleteCard = (cardId) => {
@@ -83,7 +61,7 @@ export const deleteCard = (cardId) => {
     if (res.ok) {
       return true;
     }
-    return Promise.reject(`Ошибка при удалении карточки: ${res.status}`);
+    return Promise.reject(`Ошибка ${res.status}`);
   });
 };
 
@@ -92,12 +70,7 @@ export const addLike = (cardId) => {
   return fetch(url, {
     method: 'PUT',
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка при добавлении лайка: ${res.status}`);
-  });
+  }).then(checkResponse);
 };
 
 export const removeLike = (cardId) => {
@@ -105,12 +78,7 @@ export const removeLike = (cardId) => {
   return fetch(url, {
     method: 'DELETE',
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка при удалении лайка: ${res.status}`);
-  });
+  }).then(checkResponse);
 };
 
 export const validateAvatarLink = (avatarLink) => {
@@ -120,7 +88,7 @@ export const validateAvatarLink = (avatarLink) => {
     if (res.ok) {
       return res.headers.get('content-type');
     }
-    return Promise.reject(`Ошибка при обновлении аватара: ${res.status}`);
+    return Promise.reject(`Ошибка ${res.status}`);
   });
 };
 
@@ -132,10 +100,5 @@ export const editAvatar = (avatarLink) => {
     body: JSON.stringify({
       avatar: avatarLink,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка при обновлении аватара: ${res.status}`);
-  });
+  }).then(checkResponse);
 };
