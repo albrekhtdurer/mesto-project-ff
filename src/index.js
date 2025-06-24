@@ -153,7 +153,7 @@ function handleCardDelete(evt) {
   renderLoadingButton(buttonConfirmDeleteSubmit, 'Удаление...');
   evt.preventDefault();
   deleteCard(cardToDeleteId)
-  .then(() => {
+    .then(() => {
       deleteCardFromPage(cardToDelete);
       closeModal(popupConfirmDelete);
     })

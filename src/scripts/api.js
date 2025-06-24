@@ -1,4 +1,4 @@
-import {checkResponse} from './utils';
+import { checkResponse } from './utils';
 
 const config = {
   baseUrl: 'https://mesto.nomoreparties.co/v1/wff-cohort-41',
