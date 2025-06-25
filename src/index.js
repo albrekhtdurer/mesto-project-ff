@@ -96,6 +96,7 @@ const popupErrorText = popupError.querySelector('.popup__text');
 const popupConfirmDelete = document.querySelector('.popup_type_confirm_delete');
 const buttonConfirmDeleteSubmit =
   popupConfirmDelete.querySelector('.popup__button');
+buttonConfirmDeleteSubmit.addEventListener('click', handleCardDelete);
 const buttonConfirmDeleteSubmitText = buttonConfirmDeleteSubmit.textContent;
 
 const popups = [
@@ -173,7 +174,6 @@ function handleDeleteButtonClick(card, cardId) {
   cardToDeleteId = cardId;
   console.log(cardToDeleteId);
   openModal(popupConfirmDelete);
-  buttonConfirmDeleteSubmit.addEventListener('click', handleCardDelete);
 }
 
 function handleLike(evt) {
@@ -329,9 +329,6 @@ popups.forEach(function (popup) {
       evt.target.classList.contains('popup__close')
     ) {
       closeModal(popup);
-    }
-    if (evt.target.classList.contains('popup_type_confirm_delete')) {
-      buttonConfirmDeleteSubmit.removeEventListener('click', handleCardDelete);
     }
   });
 });
