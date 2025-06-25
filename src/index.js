@@ -172,7 +172,6 @@ function handleCardDelete(evt) {
 function handleDeleteButtonClick(card, cardId) {
   cardToDelete = card;
   cardToDeleteId = cardId;
-  console.log(cardToDeleteId);
   openModal(popupConfirmDelete);
 }
 
